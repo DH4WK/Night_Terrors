@@ -36,6 +36,7 @@ public class CameraBehavior : MonoBehaviour
 		}
 		
 		smoothRotation = Quaternion.Lerp (smoothRotation, Quaternion.Euler (targetRotation), rotDamp * Time.deltaTime);
+
 		Vector3 eulerAngles = smoothRotation.eulerAngles;
 		eulerAngles.z = 0f;
 		smoothRotation.eulerAngles = eulerAngles;
