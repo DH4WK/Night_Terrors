@@ -4,6 +4,7 @@ using System.Collections;
 public class CharacterMotor : MonoBehaviour
 {
 	public Rigidbody rigidBody;
+	public Transform cam;
 	
 	public float acceleration = 0.01f;
 	public float speed = 3f;
@@ -12,7 +13,7 @@ public class CharacterMotor : MonoBehaviour
 	public Vector3 realitiveVelocity = Vector3.zero;
 	private Vector3 moveVelocity;
 	
-	public float jumpAmount = 4f;
+	public float jumpAmount = 250f;
 
 	public bool grounded = false;
 	public float slopeLimit = 60f;
@@ -20,10 +21,15 @@ public class CharacterMotor : MonoBehaviour
 	void Start ()
 	{
 		rigidBody = GetComponent<Rigidbody> ();
+		cam = GameObject.FindWithTag ("MainCamera").transform;
 	}
-	
-	// Update is called once per frame
+
 	void Update ()
+	{
+		this.transform.rotation = Quaternion.Euler (Vector3.up * cam.GetComponent<CameraBehavior> ().smoothRotation.eulerAngles.y);
+	}
+
+	void FixedUpdate ()
 	{
 		Vector3 moveInput = new Vector3 (Input.GetAxis ("Horizontal"), 0f, Input.GetAxis ("Vertical"));
 
@@ -33,11 +39,11 @@ public class CharacterMotor : MonoBehaviour
 		}
 
 		velocityInput = Vector3.SmoothDamp (velocityInput, moveInput * speed, ref moveVelocity, acceleration);
-		realitiveVelocity = Quaternion.FromToRotation (Vector3.forward, this.transform.forward) * velocityInput;
+		realitiveVelocity = transform.TransformDirection (velocityInput);
 		
 		rigidBody.velocity = new Vector3 (realitiveVelocity.x, rigidBody.velocity.y, realitiveVelocity.z);
 		
-		if (Input.GetButton ("Jump") && grounded)
+		if (Input.GetButtonDown ("Jump") && grounded)
 		{
 			rigidBody.AddForce (Vector3.up * jumpAmount, ForceMode.Impulse);
 		}
