@@ -44,6 +44,9 @@ public class TP_ControllerScript : MonoBehaviour
 
         if (Input.GetAxis("Horizontal") > deadZone || Input.GetAxis("Horizontal") < -deadZone)
             TP_MotorScript.Instance.MoveVector += new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+
+        // Now tell the animation direction state what movement we are in
+        TP_AnimatorScript.Instance.DetermineCurrentMoveDirection();
     }
 
     void HandleActionInput()
