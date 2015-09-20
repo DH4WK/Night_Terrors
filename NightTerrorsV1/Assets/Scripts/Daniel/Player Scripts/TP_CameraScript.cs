@@ -33,7 +33,7 @@ public class TP_CameraScript : MonoBehaviour
      *          apply the sensitivity to the mouse wheel
      *          then clamp the y distance above or below the chracter
      * 
-     * Make the camera go where the player wants the camera to go
+     * Make the camera goes where the player wants the camera to go
      *      once we have the desired position we will
      *      move our camera to the final position
      *      look at targetlookat
@@ -49,6 +49,8 @@ public class TP_CameraScript : MonoBehaviour
     public Transform TargetLookAt; // cameras true target to look at, like the back of the players head
 
     [Header("Camera Distance from Player")]
+	public LayerMask CameraClip = 1 << LayerMask.NameToLayer ("CameraClip");
+
     public float distance = 5.0f;            // the distance will also be variable, player can change it while playing
     public float distanceMin = 3.0f;         // min distance away from the player
     public float distanceMax = 10.0f;        // max distance away from the player
@@ -146,6 +148,13 @@ public class TP_CameraScript : MonoBehaviour
 
         // Get the rotation
         Quaternion rotation = Quaternion.Euler(rotationX, rotationY, 0);
+
+		// PEIRRE's EDIT (Wall detection)
+		RaycastHit hit;
+		if (Physics.Linecast (TargetLookAt.position, TargetLookAt.position + rotation * direction, out hit, CameraClip))
+		{
+			direction += this.transform.InverseTransformPoint (hit.point + hit.normal);
+		}
         
         return TargetLookAt.position + rotation * direction;
     }
@@ -195,6 +204,11 @@ public class TP_CameraScript : MonoBehaviour
             tempCamera = new GameObject("Main Camera");
             tempCamera.AddComponent<Camera>();
             tempCamera.tag = "MainCamera";
+
+			// PIERRE's EDIT:
+			tempCamera.AddComponent<FlareLayer> ();
+			tempCamera.AddComponent<GUILayer> ();
+			tempCamera.AddComponent<AudioListener> ();
         }
 
         // Have a reference to the camera script on the main camera/ or new main camera

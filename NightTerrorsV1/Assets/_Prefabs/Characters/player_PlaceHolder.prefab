@@ -8,9 +8,12 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 415622}
+  - 143: {fileID: 14338830}
+  - 114: {fileID: 11465400}
+  - 114: {fileID: 11423676}
   m_Layer: 0
   m_Name: player_PlaceHolder
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,7 +70,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: c888e66c48c15b347819e1532baf4abb, type: 2}
+  - {fileID: 2100000, guid: e00f866bc97734c7489a951a2777d2a4, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -87,7 +90,52 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 157252}
-  m_Mesh: {fileID: 4300000, guid: 719e80cf813145b4eb9544490d851417, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 5593f2f55d9004fbbbd02160f5a03678, type: 3}
+--- !u!114 &11423676
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22644f8f32fd5904795c72049fb5803f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 10
+  Gravity: 21
+  TerminalVelocity: 20
+  JumpSpeed: 6
+  SlideThreshold: .899999976
+  MaxControllableSlideMagnitude: .400000006
+--- !u!114 &11465400
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a68b72c28b3ee41a7df06a240d995a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!143 &14338830
+CharacterController:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142978}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 3.79999995
+  m_Radius: .600000024
+  m_SlopeLimit: 45
+  m_StepOffset: .5
+  m_SkinWidth: .0799999982
+  m_MinMoveDistance: .00100000005
+  m_Center: {x: 0, y: 1.79999995, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
