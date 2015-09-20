@@ -46,11 +46,13 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Daniel\Player Scripts\PlayerAnimationControllScript.cs" />
+     <Compile Include="Assets\Scripts\Daniel\Player Scripts\TP_AnimatorScript.cs" />
      <Compile Include="Assets\Scripts\Daniel\Player Scripts\TP_CameraScript.cs" />
      <Compile Include="Assets\Scripts\Daniel\Player Scripts\TP_ControllerScript.cs" />
      <Compile Include="Assets\Scripts\Daniel\Player Scripts\TP_HelperClassScript.cs" />
      <Compile Include="Assets\Scripts\Daniel\Player Scripts\TP_MotorScript.cs" />
      <Compile Include="Assets\Scripts\Pierre\CameraBehavior.cs" />
+     <Compile Include="Assets\Scripts\Pierre\CameraBehaviorV2.cs" />
      <Compile Include="Assets\Scripts\Pierre\CharacterMotor.cs" />
      <None Include="Assets\ProCore\Prototype\Shader\pb_TransparentOverlay.shader" />
      <None Include="Assets\ProCore\Prototype\About\changelog.txt" />
@@ -70,14 +72,14 @@
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
- <Reference Include="KDTree">
- <HintPath>/Users/JPCarr/Documents/SourceTree/Night_Terrors/NightTerrorsV1/Assets/ProCore/Prototype/Classes/ClassesLib/KDTree.dll</HintPath>
- </Reference>
  <Reference Include="ProBuilderCore-Unity5">
  <HintPath>/Users/JPCarr/Documents/SourceTree/Night_Terrors/NightTerrorsV1/Assets/ProCore/Prototype/Classes/ProBuilderCore-Unity5.dll</HintPath>
  </Reference>
  <Reference Include="ProBuilderMeshOps-Unity5">
  <HintPath>/Users/JPCarr/Documents/SourceTree/Night_Terrors/NightTerrorsV1/Assets/ProCore/Prototype/Classes/ProBuilderMeshOps-Unity5.dll</HintPath>
+ </Reference>
+ <Reference Include="KDTree">
+ <HintPath>/Users/JPCarr/Documents/SourceTree/Night_Terrors/NightTerrorsV1/Assets/ProCore/Prototype/Classes/ClassesLib/KDTree.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

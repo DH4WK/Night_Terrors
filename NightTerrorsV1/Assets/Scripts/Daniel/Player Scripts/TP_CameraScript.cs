@@ -208,7 +208,7 @@ public class TP_CameraScript : MonoBehaviour
 			// PIERRE's EDIT:
 			tempCamera.AddComponent<FlareLayer> ();
 			tempCamera.AddComponent<GUILayer> ();
-			tempCamera.AddComponent<AudioListener> ();
+			//tempCamera.AddComponent<AudioListener> ();
         }
 
         // Have a reference to the camera script on the main camera/ or new main camera
