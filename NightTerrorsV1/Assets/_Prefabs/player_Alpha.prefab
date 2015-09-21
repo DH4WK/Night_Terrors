@@ -407,7 +407,7 @@ GameObject:
   - 114: {fileID: 11484810}
   - 114: {fileID: 11458318}
   m_Layer: 0
-  m_Name: Player
+  m_Name: player_Alpha
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2157,6 +2157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 0}
+  cam: {fileID: 0}
   acceleration: .00999999978
   speed: 3
   velocityInput: {x: 0, y: 0, z: 0}

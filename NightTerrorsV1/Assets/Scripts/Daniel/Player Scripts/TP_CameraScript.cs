@@ -49,15 +49,13 @@ public class TP_CameraScript : MonoBehaviour
     public Transform TargetLookAt; // cameras true target to look at, like the back of the players head
 
     [Header("Camera Distance from Player")]
-	public LayerMask CameraClip = 1 << LayerMask.NameToLayer ("CameraClip");
-
     public float distance = 5.0f;            // the distance will also be variable, player can change it while playing
     public float distanceMin = 3.0f;         // min distance away from the player
     public float distanceMax = 10.0f;        // max distance away from the player
-    public float distanceSmooth = 0.05f;
+    public float Distance_Smooth = 0.05f;
 
     private float startDistance = 0.0f;      // starting distance for the camera, default position
-    private float desiredDistnace = 0.0f;
+    private float desiredDistance = 0.0f;
     private float velDistance = 0.0f;
 
     private Vector3 desiredPosition = new Vector3(0,0,0);
@@ -78,6 +76,14 @@ public class TP_CameraScript : MonoBehaviour
     private float velX = 0.0f;
     private float velY = 0.0f;
     private float velZ = 0.0f;
+
+    [Header("Camera Occlusion")]
+    public float OcclusionDistanceStep = 0.5f;
+    public int MaxOcclusionChecks = 10;
+
+    public float DistanceResumeSmooth = 1.0f;
+    private float distanceSmooth = 0.0f;
+    private float preOcludedDistance = 0.0f;
 
     private Vector3 position = Vector3.zero;
 
@@ -104,7 +110,13 @@ public class TP_CameraScript : MonoBehaviour
 
         HandlePlayerInput();
 
-        CalculateDesiredPosition();
+        int count = 0;
+
+        do
+        {
+            CalculateDesiredPosition();
+            count++;
+        } while (CheckIfOccluded(count));        
 
         UpdatePosition();
 	}
@@ -127,15 +139,22 @@ public class TP_CameraScript : MonoBehaviour
         // Get input from the mousewheel
         if (Input.GetAxis("Mouse ScrollWheel") < -deadZone || Input.GetAxis("Mouse ScrollWheel") > deadZone)
         {
-            desiredDistnace = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * MouseWheel_Sensitivity,
+            desiredDistance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * MouseWheel_Sensitivity,
                                           distanceMin, distanceMax);
+
+            preOcludedDistance = desiredDistance;
+
+            distanceSmooth = Distance_Smooth;
         }
     }
 
     void CalculateDesiredPosition()
     {
+        // Evaluate distance
+        ResetDesiredDistance();
+
         // Calculate distance
-        distance = Mathf.SmoothDamp(distance, desiredDistnace, ref velDistance, distanceSmooth);
+        distance = Mathf.SmoothDamp(distance, desiredDistance, ref velDistance, distanceSmooth);
 
         // Calculate our desired position
         desiredPosition = CalculatePosition(mouseY, mouseX, distance);
@@ -149,14 +168,91 @@ public class TP_CameraScript : MonoBehaviour
         // Get the rotation
         Quaternion rotation = Quaternion.Euler(rotationX, rotationY, 0);
 
-		// PEIRRE's EDIT (Wall detection)
-		RaycastHit hit;
-		if (Physics.Linecast (TargetLookAt.position, TargetLookAt.position + rotation * direction, out hit, CameraClip))
-		{
-			direction += this.transform.InverseTransformPoint (hit.point + hit.normal);
-		}
-        
         return TargetLookAt.position + rotation * direction;
+    }
+
+    bool CheckIfOccluded(int count)
+    {
+        bool isOccluded = false;
+
+        float nearestDistance = CheckCameraPoints(TargetLookAt.position, desiredPosition);
+
+        if (nearestDistance != -1)
+        {
+            if (count < MaxOcclusionChecks)
+            {
+                isOccluded = true;
+                distance -= OcclusionDistanceStep;
+
+                if (distance < 0.25f)
+                    distance = 0.25f;
+            }
+            else
+                distance = nearestDistance - Camera.main.nearClipPlane;
+
+            desiredDistance = distance;
+
+            distanceSmooth = DistanceResumeSmooth;
+        }
+
+        return isOccluded;
+    }
+
+    float CheckCameraPoints(Vector3 from, Vector3 to)
+    {
+        // compare the nearest distance if any points have been hit
+        float nearestDistance = -1.0f;
+
+        RaycastHit hitInfo;
+
+        TP_HelperClassScript.ClipPlanePoints clipPlanePoints = TP_HelperClassScript.ClipPlaneAtNear(to);
+
+        // Debug to see lines point to those 4 critical points, easier to visualize
+        Debug.DrawLine(from, to + transform.forward * -Camera.main.nearClipPlane, Color.red);
+        Debug.DrawLine(from, clipPlanePoints.UpperLeft);
+        Debug.DrawLine(from, clipPlanePoints.LowerLeft);
+        Debug.DrawLine(from, clipPlanePoints.UpperRight);
+        Debug.DrawLine(from, clipPlanePoints.LowerRight);
+
+        Debug.DrawLine(clipPlanePoints.UpperLeft, clipPlanePoints.UpperRight);
+        Debug.DrawLine(clipPlanePoints.UpperRight, clipPlanePoints.LowerRight);
+        Debug.DrawLine(clipPlanePoints.LowerRight, clipPlanePoints.LowerLeft);
+        Debug.DrawLine(clipPlanePoints.LowerLeft, clipPlanePoints.UpperLeft);
+
+        // Now that we can see it in editor, start to do the math
+        if (Physics.Linecast(from, clipPlanePoints.UpperLeft, out hitInfo) && hitInfo.collider.tag != "Player")
+            if (hitInfo.distance < nearestDistance || nearestDistance == -1)
+                nearestDistance = hitInfo.distance;
+        if (Physics.Linecast(from, clipPlanePoints.LowerLeft, out hitInfo) && hitInfo.collider.tag != "Player")
+            if(hitInfo.distance < nearestDistance || nearestDistance == -1)
+                nearestDistance = hitInfo.distance;
+        if (Physics.Linecast(from, clipPlanePoints.UpperRight, out hitInfo) && hitInfo.collider.tag != "Player")
+            if (hitInfo.distance < nearestDistance || nearestDistance == -1)
+                nearestDistance = hitInfo.distance;
+        if (Physics.Linecast(from, clipPlanePoints.LowerRight, out hitInfo) && hitInfo.collider.tag != "Player")
+            if (hitInfo.distance < nearestDistance || nearestDistance == -1)
+                nearestDistance = hitInfo.distance;
+
+        if (Physics.Linecast(from, to + transform.forward * -Camera.main.nearClipPlane, out hitInfo) && hitInfo.collider.tag != "Plaer")
+            if (hitInfo.distance < nearestDistance || nearestDistance == -1)
+                nearestDistance = hitInfo.distance;
+
+        return nearestDistance;
+    }
+
+    void ResetDesiredDistance()
+    {
+        if (desiredDistance < preOcludedDistance)
+        {
+            Vector3 pos = CalculatePosition(mouseY, mouseX, preOcludedDistance);
+
+            float nearestDistance = CheckCameraPoints(TargetLookAt.position, pos);
+
+            if (nearestDistance == -1 || nearestDistance > preOcludedDistance)
+            {
+                desiredDistance = preOcludedDistance;
+            }
+        }
     }
 
     void UpdatePosition()
@@ -177,7 +273,8 @@ public class TP_CameraScript : MonoBehaviour
         mouseX = 0.0f;
         mouseY = 10.0f;
         distance = startDistance;
-        desiredDistnace = distance;
+        desiredDistance = distance;
+        preOcludedDistance = distance;
     }
 
     public static void UseExistingOrCreateNewMainCamera()
@@ -204,11 +301,6 @@ public class TP_CameraScript : MonoBehaviour
             tempCamera = new GameObject("Main Camera");
             tempCamera.AddComponent<Camera>();
             tempCamera.tag = "MainCamera";
-
-			// PIERRE's EDIT:
-			tempCamera.AddComponent<FlareLayer> ();
-			tempCamera.AddComponent<GUILayer> ();
-			//tempCamera.AddComponent<AudioListener> ();
         }
 
         // Have a reference to the camera script on the main camera/ or new main camera
