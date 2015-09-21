@@ -27,14 +27,16 @@ public class CameraBehaviorV2 : MonoBehaviour
 	public Transform camera;
 
 	private float currentDistance = 0f;		// the distance will also be variable, player can change it while playing
-	private float desiredDistnace = 5f;
+	private float desiredDistance = 5f;
 	private float velDistance = 0f;
 	[SerializeField] private float distanceSmooth = 0.05f;
 
 	[SerializeField] private float distanceMin = 3f;			// min distance away from the player
 	[SerializeField] private float distanceMax = 10f;			// max distance away from the player
 
-	void Start ()
+	private Vector3 camPosition = Vector3.zero;
+
+	void Awake ()
 	{
 		pivot = this.transform;
 
@@ -45,7 +47,7 @@ public class CameraBehaviorV2 : MonoBehaviour
 			float characterHeight = _player.GetComponent<CapsuleCollider> ().height;
 			float characterHead = characterHeight - characterHeight / 4f;				// this is the height we want our camera to look at on our player
 
-			this.transform.localPosition = new Vector3 (0f, characterHeight, 0f);
+			pivot.localPosition = new Vector3 (0f, characterHeight, 0f);
 
 			if (GetComponentInChildren<Camera> () != null)
 			{
@@ -85,18 +87,18 @@ public class CameraBehaviorV2 : MonoBehaviour
 
 		if (Input.GetAxis ("Vertical") != 0f || Input.GetAxis ("Horizontal") != 0f)
 		{
-			this.transform.parent.rotation = Quaternion.Slerp (this.transform.parent.rotation, Quaternion.Euler (Vector3.up * targetRotation.y), lerpDamp * Time.deltaTime);
+			pivot.parent.rotation = Quaternion.Slerp (this.transform.parent.rotation, Quaternion.Euler (Vector3.up * targetRotation.y), lerpDamp * Time.deltaTime);
 		}
 
-		this.transform.rotation = Quaternion.Euler (Vector3.right * smoothRotation.eulerAngles.x + Vector3.up * smoothRotation.eulerAngles.y);
+		pivot.rotation = Quaternion.Euler (Vector3.right * smoothRotation.eulerAngles.x + Vector3.up * smoothRotation.eulerAngles.y);
 
 		// Calculate distance
-		currentDistance = Mathf.SmoothDamp (currentDistance, desiredDistnace, ref velDistance, distanceSmooth);
-		
-		// Calculate our desired position realative to the pivot
-		Vector3 cameraPos = new Vector3 (0f, 0f, -currentDistance);
+		currentDistance = Mathf.SmoothDamp (currentDistance, desiredDistance, ref velDistance, distanceSmooth);
 
-		camera.localPosition = cameraPos;
+		// Calculate our desired position realative to the pivot
+		camPosition = new Vector3 (0f, 0f, -currentDistance);
+
+		camera.localPosition = camPosition;
 	}
 
 	void HandleInput ()
@@ -125,7 +127,7 @@ public class CameraBehaviorV2 : MonoBehaviour
 		// Get input from the mousewheel
 		if (Input.GetAxis ("Mouse ScrollWheel") < -deadZone || Input.GetAxis ("Mouse ScrollWheel") > deadZone)
 		{
-			desiredDistnace = Mathf.Clamp (currentDistance - Input.GetAxis ("Mouse ScrollWheel") * mouseWheel_Sensitivity, distanceMin, distanceMax);
+			desiredDistance = Mathf.Clamp (currentDistance - Input.GetAxis ("Mouse ScrollWheel") * mouseWheel_Sensitivity, distanceMin, distanceMax);
 		}
 	}
 }
