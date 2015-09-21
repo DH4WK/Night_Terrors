@@ -200,7 +200,7 @@ MonoBehaviour:
   invertY: 0
   mouseWheel_Sensitivity: 5
   mouse_Sensitivity: {x: 5, y: 5}
-  lerpDamp: 2
+  lerpDamp: 4
   smoothRotationDamp: 8
   smoothRotation: {x: 0, y: 0, z: 0, w: 0}
   camera: {fileID: 0}
@@ -213,7 +213,7 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 141490}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 85fab8b9964734b84b05be56abee1760, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: .5
