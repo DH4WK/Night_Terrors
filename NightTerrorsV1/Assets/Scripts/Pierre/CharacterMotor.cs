@@ -24,11 +24,6 @@ public class CharacterMotor : MonoBehaviour
 		cam = GameObject.FindWithTag ("MainCamera").transform;
 	}
 
-	void Update ()
-	{
-		this.transform.rotation = Quaternion.Euler (Vector3.up * cam.GetComponent<CameraBehavior> ().smoothRotation.eulerAngles.y);
-	}
-
 	void FixedUpdate ()
 	{
 		Vector3 moveInput = new Vector3 (Input.GetAxis ("Horizontal"), 0f, Input.GetAxis ("Vertical"));
