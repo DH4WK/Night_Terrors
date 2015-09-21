@@ -7,7 +7,6 @@ public class CameraBehaviorV2 : MonoBehaviour
 	public Transform pivot;
 
 	[SerializeField] private Vector3 targetRotation = Vector3.zero;
-	[SerializeField] private float realativePositionX = 0f;
 	[SerializeField] private Vector2 XAxisLimit = new Vector2 (-30f, 45f);
 
 	// Ipnut
@@ -16,24 +15,24 @@ public class CameraBehaviorV2 : MonoBehaviour
 	[SerializeField] private float mouseWheel_Sensitivity = 5.0f;
 	[SerializeField] private Vector2 mouse_Sensitivity = new Vector2 (5f, 5f);		// The x cordinate matches to the y-axis, and the y cordinate matches to the x-axis
 
-	private float mouseX = 0.0f;
-	private float mouseY = 0.0f;
+	private float mouseX = 0f;
+	private float mouseY = 0f;
 
 	// Smooth
+	[SerializeField] private float lerpDamp = 2f;
 	[SerializeField] private float smoothRotationDamp = 8f;
 	[HideInInspector] public Quaternion smoothRotation;
 	
 	// Distance
 	public Transform camera;
 
-	[SerializeField] private float currentDistance = 5.0f;		// the distance will also be variable, player can change it while playing
-
-	[SerializeField] private float desiredDistnace = 0.0f;
-	private float velDistance = 0.0f;
+	private float currentDistance = 0f;		// the distance will also be variable, player can change it while playing
+	private float desiredDistnace = 5f;
+	private float velDistance = 0f;
 	[SerializeField] private float distanceSmooth = 0.05f;
 
-	[SerializeField] private float distanceMin = 3.0f;			// min distance away from the player
-	[SerializeField] private float distanceMax = 10.0f;			// max distance away from the player
+	[SerializeField] private float distanceMin = 3f;			// min distance away from the player
+	[SerializeField] private float distanceMax = 10f;			// max distance away from the player
 
 	void Start ()
 	{
@@ -44,9 +43,9 @@ public class CameraBehaviorV2 : MonoBehaviour
 		if (_player)
 		{
 			float characterHeight = _player.GetComponent<CapsuleCollider> ().height;
-			float characterHead = characterHeight - characterHeight / 8f;				// this is the height we want our camera to look at on our player
+			float characterHead = characterHeight - characterHeight / 4f;				// this is the height we want our camera to look at on our player
 
-			this.transform.localPosition = new Vector3 (realativePositionX, characterHeight, 0f);
+			this.transform.localPosition = new Vector3 (0f, characterHeight, 0f);
 
 			if (GetComponentInChildren<Camera> () != null)
 			{
@@ -84,7 +83,11 @@ public class CameraBehaviorV2 : MonoBehaviour
 
 		smoothRotation = Quaternion.Slerp (smoothRotation, Quaternion.Euler (targetRotation), smoothRotationDamp * Time.deltaTime);
 
-		this.transform.parent.rotation = Quaternion.Euler (Vector3.up * smoothRotation.eulerAngles.y);
+		if (Input.GetAxis ("Vertical") != 0f || Input.GetAxis ("Horizontal") != 0f)
+		{
+			this.transform.parent.rotation = Quaternion.Slerp (this.transform.parent.rotation, Quaternion.Euler (Vector3.up * targetRotation.y), lerpDamp * Time.deltaTime);
+		}
+
 		this.transform.rotation = Quaternion.Euler (Vector3.right * smoothRotation.eulerAngles.x + Vector3.up * smoothRotation.eulerAngles.y);
 
 		// Calculate distance

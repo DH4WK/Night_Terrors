@@ -49,8 +49,6 @@ public class TP_CameraScript : MonoBehaviour
     public Transform TargetLookAt; // cameras true target to look at, like the back of the players head
 
     [Header("Camera Distance from Player")]
-	public LayerMask CameraClip = 1 << LayerMask.NameToLayer ("CameraClip");
-
     public float distance = 5.0f;            // the distance will also be variable, player can change it while playing
     public float distanceMin = 3.0f;         // min distance away from the player
     public float distanceMax = 10.0f;        // max distance away from the player
@@ -148,13 +146,6 @@ public class TP_CameraScript : MonoBehaviour
 
         // Get the rotation
         Quaternion rotation = Quaternion.Euler(rotationX, rotationY, 0);
-
-		// PEIRRE's EDIT (Wall detection)
-		RaycastHit hit;
-		if (Physics.Linecast (TargetLookAt.position, TargetLookAt.position + rotation * direction, out hit, CameraClip))
-		{
-			direction += this.transform.InverseTransformPoint (hit.point + hit.normal);
-		}
         
         return TargetLookAt.position + rotation * direction;
     }
