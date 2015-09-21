@@ -21,6 +21,7 @@ public class CharacterMotor : MonoBehaviour
 	void Start ()
 	{
 		rigidBody = GetComponent<Rigidbody> ();
+		rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
 		cam = GameObject.FindWithTag ("MainCamera").transform;
 	}
 
