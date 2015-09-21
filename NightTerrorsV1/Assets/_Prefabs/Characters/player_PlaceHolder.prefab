@@ -8,8 +8,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 415622}
-  - 114: {fileID: 11465400}
-  - 114: {fileID: 11423676}
   - 143: {fileID: 14354220}
   - 114: {fileID: 11477772}
   - 114: {fileID: 11491038}
@@ -116,37 +114,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc066e9729074134998fe214f1a61455, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &11423676
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 142978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22644f8f32fd5904795c72049fb5803f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ForwardSpeed: 10
-  BackwardSpeed: 4
-  StrafingSpeed: 5
-  SlideSpeed: 10
-  Gravity: 21
-  TerminalVelocity: 20
-  JumpSpeed: 6
-  SlideThreshold: .899999976
-  MaxControllableSlideMagnitude: .400000006
---- !u!114 &11465400
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 142978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66a68b72c28b3ee41a7df06a240d995a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &11477772
