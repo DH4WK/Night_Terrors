@@ -5,7 +5,11 @@ public class TP_MotorScript : MonoBehaviour
 {
     public static TP_MotorScript Instance;
 
-    public float MoveSpeed = 10.0f;
+    public float ForwardSpeed = 10.0f;
+    public float BackwardSpeed = 4.0f;
+    public float StrafingSpeed = 5.0f;
+    public float SlideSpeed = 10.0f;
+
     public float Gravity = 21.0f;
     public float TerminalVelocity = 20.0f;
     public float JumpSpeed = 6.0f;
@@ -42,7 +46,7 @@ public class TP_MotorScript : MonoBehaviour
         ApplySlide();
 
         // Multiply MoveVector by MoveSpeed (Speed per Frame)
-        MoveVector *= MoveSpeed;
+        MoveVector *= MoveSpeed();
 
         // Reapply vertical velocity to the y axis
         MoveVector = new Vector3(MoveVector.x, VerticalVelocity, MoveVector.z);
@@ -104,5 +108,46 @@ public class TP_MotorScript : MonoBehaviour
                                                   Camera.main.transform.eulerAngles.y,
                                                   transform.eulerAngles.z);
         }
+    }
+
+    float MoveSpeed()
+    {
+        float moveSpeed = 0.0f;
+
+        switch (TP_AnimatorScript.Instance.MoveDirection)
+        {
+            case TP_AnimatorScript.Direction.Stationary:
+                moveSpeed = 0.0f;
+                break;
+            case TP_AnimatorScript.Direction.Forward:
+                moveSpeed = ForwardSpeed;
+                break;
+            case TP_AnimatorScript.Direction.Backward:
+                moveSpeed = BackwardSpeed;
+                break;
+            case TP_AnimatorScript.Direction.Left:
+                moveSpeed = StrafingSpeed;
+                break;
+            case TP_AnimatorScript.Direction.Right:
+                moveSpeed = StrafingSpeed;
+                break;
+            case TP_AnimatorScript.Direction.LeftForward:
+                moveSpeed = ForwardSpeed;
+                break;
+            case TP_AnimatorScript.Direction.RightForward:
+                moveSpeed = ForwardSpeed;
+                break;
+            case TP_AnimatorScript.Direction.LeftBackward:
+                moveSpeed = BackwardSpeed;
+                break;
+            case TP_AnimatorScript.Direction.RightBackward:
+                moveSpeed = BackwardSpeed;
+                break;
+        }
+
+        if (slideDirection.magnitude > 0)
+            moveSpeed = SlideSpeed;
+
+        return moveSpeed;
     }
 }
