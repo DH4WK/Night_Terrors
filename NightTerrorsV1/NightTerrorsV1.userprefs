@@ -1,10 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Pierre/CameraBehaviorV2.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Testing/AnimationController/AnimationControlScript.cs">
     <Files>
-      <File FileName="Assets/Scripts/Pierre/CharacterMotor.cs" Line="24" Column="63" />
-      <File FileName="Assets/Scripts/Pierre/CameraBehaviorV2.cs" Line="172" Column="33" />
-      <File FileName="Assets/Scripts/Daniel/Player Scripts/TP_CameraScript.cs" Line="243" Column="30" />
+      <File FileName="Assets/Testing/AnimationController/AnimationControlScript.cs" Line="141" Column="50" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,8 +12,11 @@
               <Node name="Daniel" expanded="True">
                 <Node name="Player Scripts" expanded="True" />
               </Node>
-              <Node name="Pierre" expanded="True">
-                <Node name="CameraBehaviorV2.cs" selected="True" />
+              <Node name="Pierre" expanded="True" />
+            </Node>
+            <Node name="Testing" expanded="True">
+              <Node name="AnimationController" expanded="True">
+                <Node name="AnimationControlScript.cs" selected="True" />
               </Node>
             </Node>
           </Node>

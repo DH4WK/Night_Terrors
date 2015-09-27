@@ -287,7 +287,7 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
---- !u!1001 &1984555464
+--- !u!1001 &1793205511
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
