@@ -28,6 +28,7 @@ public class CameraBehaviorV2 : MonoBehaviour
 
 	private float currentDistance = 0f;		// the distance will also be variable, player can change it while playing
 	private float desiredDistance = 5f;
+	private float scrollDistance = 5f;
 	private float velDistance = 0f;
 	[SerializeField] private float distanceSmooth = 0.05f;
 
@@ -45,9 +46,9 @@ public class CameraBehaviorV2 : MonoBehaviour
 		if (_player)
 		{
 			float characterHeight = _player.GetComponent<CapsuleCollider> ().height;
-			float characterHead = characterHeight - characterHeight / 4f;				// this is the height we want our camera to look at on our player
+			float characterHead = characterHeight - characterHeight / 8f;				// this is the height we want our camera to look at on our player
 
-			pivot.localPosition = new Vector3 (0f, characterHeight, 0f);
+			pivot.localPosition = new Vector3 (0f, characterHead, 0f);
 
 			if (GetComponentInChildren<Camera> () != null)
 			{
@@ -92,6 +93,18 @@ public class CameraBehaviorV2 : MonoBehaviour
 
 		pivot.rotation = Quaternion.Euler (Vector3.right * smoothRotation.eulerAngles.x + Vector3.up * smoothRotation.eulerAngles.y);
 
+		RaycastHit hit;
+		if (Physics.Linecast (pivot.position, -pivot.InverseTransformDirection (Vector3.forward * scrollDistance), out hit))
+		{
+			desiredDistance = scrollDistance - (hit.distance / scrollDistance);
+		}
+		else
+		{
+			desiredDistance = scrollDistance;
+		}
+
+		Debug.DrawLine (pivot.position, -pivot.InverseTransformDirection (Vector3.forward * scrollDistance));
+
 		// Calculate distance
 		currentDistance = Mathf.SmoothDamp (currentDistance, desiredDistance, ref velDistance, distanceSmooth);
 
@@ -127,7 +140,7 @@ public class CameraBehaviorV2 : MonoBehaviour
 		// Get input from the mousewheel
 		if (Input.GetAxis ("Mouse ScrollWheel") < -deadZone || Input.GetAxis ("Mouse ScrollWheel") > deadZone)
 		{
-			desiredDistance = Mathf.Clamp (currentDistance - Input.GetAxis ("Mouse ScrollWheel") * mouseWheel_Sensitivity, distanceMin, distanceMax);
+			scrollDistance = Mathf.Clamp (scrollDistance - Input.GetAxis ("Mouse ScrollWheel") * mouseWheel_Sensitivity, distanceMin, distanceMax);
 		}
 	}
 }

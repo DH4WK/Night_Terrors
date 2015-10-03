@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Testing/AnimationController/AnimationControlScript.cs">
     <Files>
-      <File FileName="Assets/Testing/AnimationController/AnimationControlScript.cs" Line="141" Column="50" />
+      <File FileName="Assets/Testing/AnimationController/AnimationControlScript.cs" Line="17" Column="39" />
+      <File FileName="Assets/Scripts/Pierre/CameraBehaviorV2.cs" Line="99" Column="71" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

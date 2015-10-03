@@ -78,8 +78,6 @@ GameObject:
   - 124: {fileID: 12401548}
   - 92: {fileID: 9279740}
   - 81: {fileID: 8133926}
-  - 54: {fileID: 5495008}
-  - 135: {fileID: 13527916}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -231,21 +229,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!54 &5495008
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 189548}
-  serializedVersion: 2
-  m_Mass: 1.00000001e-07
-  m_Drag: 0
-  m_AngularDrag: .0500000007
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 118
-  m_CollisionDetection: 2
 --- !u!81 &8133926
 AudioListener:
   m_ObjectHideFlags: 1
@@ -311,18 +294,6 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 189548}
   m_Enabled: 1
---- !u!135 &13527916
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 189548}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: .349999994
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &13640820
 CapsuleCollider:
   m_ObjectHideFlags: 1
